@@ -49,7 +49,13 @@ make clean
 ### Running the Game
 
 ```sh
-./mine
+make run
+```
+
+or
+
+```sh
+./bin/mine
 ```
 
 ## How to Play
