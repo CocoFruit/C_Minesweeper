@@ -11,6 +11,9 @@ This is a command-line Minesweeper game written in C using `ncurses`. This was m
 - **Win/Loss detection**
 - **Customizable board size and mine count**
 
+## Screenshots
+<img src="assets/screenshot.png" alt="Minesweeper Gameplay" width="1000">
+
 ## Installation
 
 To compile and run the game, ensure you have `ncurses` installed.

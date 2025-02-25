@@ -295,7 +295,7 @@ void init_colors(){
 int main() {
     srand(time(NULL));
 
-    const int NUM_MINES = 15;
+    const int NUM_MINES = 30;
     const int BOARD_SIZE = 17;
     int** revealed;
     int** flags;
@@ -361,7 +361,7 @@ int main() {
                 print_status(status_win, NUM_MINES, flags_placed, BOARD_SIZE, state, 1);
 
                 // wiat for a second
-                napms(200);
+                napms(100);
 
                 if (board[cury][curx] == -1){
                     state = -1;
@@ -376,6 +376,7 @@ int main() {
                     print_win(board_win);
                     state = 1;
                 }
+
                 break;
             case 'f': // Place a flag
             case 'x': // Place a flag
