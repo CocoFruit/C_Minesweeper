@@ -51,17 +51,70 @@ void print_board(WINDOW *win, int** board, int size, int cursor_x, int cursor_y,
     }
     wrefresh(win);
 }
-
-void print_start(WINDOW *win,int size){
+void print_start(WINDOW *win, int *size, int *num_bombs) {
     wclear(win);
-    box(win,0,0); 
+    box(win, 0, 0); 
     wattron(win, COLOR_PAIR(STARTING));
-    // remember size is half the window size
-    mvwprintw(win, size/2+1, size-8, "[ENTER] TO START");
+    // Remember size is half the window size
+    mvwprintw(win, *size / 2 + 1, *size - 8, "[ENTER] TO START");
     wattroff(win, COLOR_PAIR(STARTING));
-    wgetch(win);
+
+    mvwprintw(win, *size / 2 + 1 + 2, *size - 8, "#BOMBS");
+    mvwprintw(win, *size / 2 + 1 + 3, *size - 6, "/\\");
+    // Use %02d to ensure two digits, padding with leading zero if needed
+    mvwprintw(win, *size / 2 + 1 + 4, *size - 6, "%02d", *num_bombs);
+    mvwprintw(win, *size / 2 + 1 + 5, *size - 6, "\\/");
+
+    int selected = 0; // 0 = num_bombs, 1 = size
+
+    if (selected == 0) {
+        wattron(win, A_REVERSE);
+        mvwprintw(win, *size / 2 + 1 + 4, *size - 6, "%02d", *num_bombs);
+        wattroff(win, A_REVERSE);
+    } else if (selected == 1) {
+        mvwprintw(win, *size / 2 + 1 + 4, *size - 6, "%02d", *num_bombs);
+    }
+
+    int ch;
+    while ((ch = wgetch(win)) != '\n') {
+        switch (ch) {
+            case KEY_UP:
+                if (selected == 0) {
+                    if (*num_bombs < 99) (*num_bombs)++;
+                }
+                // else {
+                //     if (*size < 99) (*size)++;
+                // }
+                break;
+            case KEY_DOWN:
+                if (selected == 0) {
+                    if (*num_bombs > 1) (*num_bombs)--;
+                }
+                // else {
+                //     if (*size > 1) (*size)--;
+                // }
+                break;
+            case KEY_LEFT:
+                selected = 0;
+                break;
+            case KEY_RIGHT:
+                selected = 1;
+                break;
+        }
+        wrefresh(win);
+        if (selected == 0) {
+            wattron(win, A_REVERSE);
+            mvwprintw(win, *size / 2 + 1 + 4, *size - 6, "%02d", *num_bombs);
+            wattroff(win, A_REVERSE);
+        } else if (selected == 1) {
+            mvwprintw(win, *size / 2 + 1 + 4, *size - 6, "%02d", *num_bombs);
+        }
+        wrefresh(win);
+    }
+
     wrefresh(win);
 }
+
 
 void print_lost(WINDOW *win, int** board, int size, int** revealed, int** flags){
     for(int y = 0; y < size; y++){
@@ -163,6 +216,8 @@ void print_status(WINDOW *win, int num_mines, int flags_placed, int size, int st
 
     wrefresh(win);
 }
+
+
 
 void init_colors(){
     init_pair(DEFAULT, COLOR_BLUE, COLOR_BLACK);

@@ -12,7 +12,7 @@ BIN_DIR = bin
 TARGET = $(BIN_DIR)/mine
 
 # Source and object files
-SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/ui.c $(SRC_DIR)/game_logic.c
+SRCS = main.c $(SRC_DIR)/ui.c $(SRC_DIR)/game_logic.c
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
 
 # Build the final binary
