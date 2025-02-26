@@ -55,6 +55,7 @@ int main() {
     int curx = board_size / 2, cury = board_size / 2;
     int flags_placed = 0;
     int state = 0; // 0 = playing, -1 = lost, 1 = won
+    int moved = 0;
 
     int** board = create_board(board_size, num_mines, &revealed, &flags);
     
@@ -84,6 +85,17 @@ int main() {
                 if (revealed[cury][curx] == 1) break;
                 print_status(status_win, num_mines, flags_placed, board_size, state, 1);
                 napms(100);
+                
+                if(moved == 0){
+                    // make sure the first click is not a mine
+                    /* THIS COULD BE OPTIMIZED */
+                    while(board[cury][curx] != 0){
+                        free_memory(board, revealed, flags, board_size);
+                        board = create_board(board_size, num_mines, &revealed, &flags);
+                    }
+                    moved = 1;
+                }
+                
                 if (board[cury][curx] == -1){
                     state = -1;
                     print_lost(board_win, board, board_size, revealed, flags);
@@ -110,6 +122,8 @@ int main() {
                 board = create_board(board_size, num_mines, &revealed, &flags);
                 print_board(board_win, board, board_size, curx, cury, revealed, flags);
                 state = 0;
+                flags_placed = 0;
+                moved = 0;
                 break;
             default:
                 break;

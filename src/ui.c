@@ -61,9 +61,14 @@ void print_start(WINDOW *win, int *size, int *num_bombs) {
 
     mvwprintw(win, *size / 2 + 1 + 2, *size - 8, "#BOMBS");
     mvwprintw(win, *size / 2 + 1 + 3, *size - 6, "/\\");
-    // Use %02d to ensure two digits, padding with leading zero if needed
     mvwprintw(win, *size / 2 + 1 + 4, *size - 6, "%02d", *num_bombs);
     mvwprintw(win, *size / 2 + 1 + 5, *size - 6, "\\/");
+
+    mvwprintw(win, *size / 2 + 1 + 2, *size + 4, "SIZE");
+    mvwprintw(win, *size / 2 + 1 + 3, *size + 5, "/\\");
+    mvwprintw(win, *size / 2 + 1 + 4, *size + 5, "%02d", *num_bombs);
+    mvwprintw(win, *size / 2 + 1 + 5, *size + 5, "\\/");
+
 
     int selected = 0; // 0 = num_bombs, 1 = size
 
@@ -106,8 +111,12 @@ void print_start(WINDOW *win, int *size, int *num_bombs) {
             wattron(win, A_REVERSE);
             mvwprintw(win, *size / 2 + 1 + 4, *size - 6, "%02d", *num_bombs);
             wattroff(win, A_REVERSE);
+            mvwprintw(win, *size / 2 + 1 + 4, *size + 5, "%02d", *size);
         } else if (selected == 1) {
             mvwprintw(win, *size / 2 + 1 + 4, *size - 6, "%02d", *num_bombs);
+            wattron(win, A_REVERSE);
+            mvwprintw(win, *size / 2 + 1 + 4, *size + 5, "%02d", *size);
+            wattroff(win, A_REVERSE);
         }
         wrefresh(win);
     }
@@ -166,7 +175,7 @@ void print_win(WINDOW* win) {
 
 
 void print_status(WINDOW *win, int num_mines, int flags_placed, int size, int state, int click){
-    mvwprintw(win, 1, 2, "Mines: %d", num_mines);
+    mvwprintw(win, 1, 2, "Mines: %02d", num_mines);
 
 
     
@@ -195,7 +204,7 @@ void print_status(WINDOW *win, int num_mines, int flags_placed, int size, int st
 
     int flag_color = (int) (((float) flags_placed / (float) num_mines) * (9-1) + 1);
     wattron(win, COLOR_PAIR(flag_color));
-    mvwprintw(win, 2, 2, "Flags: %d", flags_placed);
+    mvwprintw(win, 2, 2, "Flags: %02d", flags_placed);
     wattroff(win, COLOR_PAIR(flag_color));
 
     if(state == -1){
@@ -223,7 +232,7 @@ void init_colors(){
     init_pair(DEFAULT, COLOR_BLUE, COLOR_BLACK);
     init_pair(UNCOVERED, COLOR_WHITE, COLOR_BLACK);
     init_pair(MINE, COLOR_RED, COLOR_RED);
-    init_pair(FLAG, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(FLAG, COLOR_RED, COLOR_BLACK);
     init_pair(STARTING, COLOR_GREEN, COLOR_BLACK);
 
     // thank you ChatGPT
