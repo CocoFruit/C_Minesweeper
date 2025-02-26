@@ -1,7 +1,21 @@
+# Detect OS
+OS := $(shell uname -s)
+
 # Compiler settings
 CC = gcc
 CFLAGS = -Wall -Wextra -pedantic -std=c99 -Iinclude  # Updated to use include/
-LDFLAGS = -lncurses
+
+# Platform-specific settings
+ifeq ($(OS), Linux)
+    LDFLAGS = -lncurses
+else
+    ifeq ($(OS), Darwin)  # macOS
+        LDFLAGS = -lncurses
+    else  # Assume Windows (MinGW)
+        LDFLAGS = -lncursesw
+        CFLAGS += -D_USE_MINGW
+    endif
+endif
 
 # Directories
 SRC_DIR = src

@@ -1,6 +1,6 @@
 # Minesweeper in C
 
-This is a command-line Minesweeper game written in C using `ncurses`. This was my first project in C, created as a way to learn the language, memory management, and terminal-based UI development.
+This is a command-line Minesweeper game written in C using `ncurses`. This project served as my first venture into C programming, where I learned about memory management, terminal-based UI development, and cross-platform compilation.
 
 ## Features
 
@@ -10,16 +10,19 @@ This is a command-line Minesweeper game written in C using `ncurses`. This was m
 - **Flagging system** to mark potential mines
 - **Win/Loss detection**
 - **Customizable board size and mine count**
+- **OS-specific compilation**: The Makefile detects Linux, macOS, or Windows (MinGW) and adjusts flags and libraries accordingly.
 
 ## Screenshots
+
 <img src="assets/screenshot.png" alt="Minesweeper Gameplay" width="1000">
 
 ## Installation
 
-To compile and run the game, ensure you have `ncurses` installed.
+### Prerequisites
 
-### Linux (Debian-based distros)
+Ensure you have `ncurses` installed on your system:
 
+#### Linux (Debian-based distros)
 ```sh
 sudo apt install libncurses5-dev libncursesw5-dev
 ```
@@ -46,10 +49,38 @@ To remove the compiled binary, use:
 make clean
 ```
 
+
+### Global Installation
+For convenience, an `install.sh` script is provided. This script:
+
+* Compiles the project using the Makefile
+* Copies the executable from bin/mine to ~/.local/bin
+* Ensures that ~/.local/bin is in your PATH
+
+To install the game globally, run the following command from the project root:
+
+```sh
+./install.sh
+```
+After installation, you can start the game from anywhere by simply typing:
+
+```sh
+mine
+```
+If `~/.local/bin` isn’t already in your PATH, the script will add it to your shell configuration files (`~/.bashrc` and/or `~/.zshrc`).
+
+
 ### Running the Game
 
 ```sh
 make run
+```
+
+or 
+
+if you have installed the game globally:
+```sh
+mine
 ```
 
 or
