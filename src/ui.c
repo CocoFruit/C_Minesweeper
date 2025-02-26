@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define DEFAULT     10
 #define UNCOVERED   11
@@ -66,7 +67,7 @@ void print_start(WINDOW *win, int *size, int *num_bombs) {
 
     mvwprintw(win, *size / 2 + 1 + 2, *size + 4, "SIZE");
     mvwprintw(win, *size / 2 + 1 + 3, *size + 5, "/\\");
-    mvwprintw(win, *size / 2 + 1 + 4, *size + 5, "%02d", *num_bombs);
+    mvwprintw(win, *size / 2 + 1 + 4, *size + 5, "%02d", *size);
     mvwprintw(win, *size / 2 + 1 + 5, *size + 5, "\\/");
 
 
@@ -105,6 +106,9 @@ void print_start(WINDOW *win, int *size, int *num_bombs) {
             case KEY_RIGHT:
                 selected = 1;
                 break;
+            case 'q':
+                endwin();
+                exit(0);
         }
         wrefresh(win);
         if (selected == 0) {
@@ -180,14 +184,11 @@ void print_status(WINDOW *win, int num_mines, int flags_placed, int size, int st
 
     
     if (click == 0){ // normal face
-        if (state == -1){ // sad face
+        if (state == -1){ // dead face
             wattron(win, COLOR_PAIR(FLAG));
-            mvwprintw(win, 1, size*2-3-1, "T_T");
+            mvwprintw(win, 1, size*2-3-1, "X_X");
             wattroff(win, COLOR_PAIR(FLAG));
         }
-        // if (state == 1){ // happy face
-        //     mvwprintw(win, 1, size*2-6-1, "(✿◠‿◠)");
-        // }
         else{
             wattron(win, COLOR_PAIR(STARTING));
             mvwprintw(win, 1, size*2-3-1, "^_^");
